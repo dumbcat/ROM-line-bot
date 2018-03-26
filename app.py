@@ -79,7 +79,7 @@ def handle_message(event):
 
     if datetime.now().isocalendar()[1] != values_list[3]:
         line_bot_api.reply_message(event.reply_token, message_error)
-    else:
+    elif datetime.now().isocalendar()[1] == values_list[3]:
         if event.message.text == u"@40遺跡":
             line_bot_api.reply_message(event.reply_token, message40)
         if event.message.text == u"@60遺跡":
