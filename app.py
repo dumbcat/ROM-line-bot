@@ -77,9 +77,9 @@ def handle_message(event):
     )
     message_error = TextSendMessage(text="抱歉，尚未有本周遺跡路線")
 
-    if datetime.now().isocalendar()[1] != values_list[3]:
+    if datetime.now().isocalendar()[1] != int(values_list[3]):
         line_bot_api.reply_message(event.reply_token, message_error)
-    elif datetime.now().isocalendar()[1] == values_list[3]:
+    else:
         if event.message.text == u"@40遺跡":
             line_bot_api.reply_message(event.reply_token, message40)
         if event.message.text == u"@60遺跡":
