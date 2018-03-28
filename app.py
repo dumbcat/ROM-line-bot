@@ -8,9 +8,9 @@ from linebot.models import (
     TextSendMessage,
     ImageSendMessage
 )
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google_sheet import gsheet
 from datetime import datetime
+import re
 
 app = Flask(__name__)
 
@@ -47,45 +47,33 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    # 連接google sheet
-    scope = ['https://spreadsheets.google.com/feeds',
-             'https://www.googleapis.com/auth/drive']
+    if re.match('^@\d\d\u907a\u8de1', event.message.text):
+        # Get google sheet data
+        values_list = gsheet()
 
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(
-        'python-455eb62bc054.json', scope)
+        message40 = ImageSendMessage(
+            original_content_url=values_list[0],
+            preview_image_url=values_list[0]
+        )
+        message60 = ImageSendMessage(
+            original_content_url=values_list[1],
+            preview_image_url=values_list[1]
+        )
+        message80 = ImageSendMessage(
+            original_content_url=values_list[2],
+            preview_image_url=values_list[2]
+        )
+        message_error = TextSendMessage(text="抱歉，尚未有本周遺跡路線")
 
-    gc = gspread.authorize(credentials)
-
-    # 連接試算表
-    sh1 = gc.open_by_key('1QQOXE_WasDzkHnQ9aXvc--eXjRso7U77lCEM7Mug8Zc')
-    # 連接試算表分頁
-    worksheet = sh1.worksheet("imgur")
-    # 取得第二列所有元素儲存為list
-    values_list = worksheet.col_values(2)
-
-    message40 = ImageSendMessage(
-        original_content_url=values_list[0],
-        preview_image_url=values_list[0]
-    )
-    message60 = ImageSendMessage(
-        original_content_url=values_list[1],
-        preview_image_url=values_list[1]
-    )
-    message80 = ImageSendMessage(
-        original_content_url=values_list[2],
-        preview_image_url=values_list[2]
-    )
-    message_error = TextSendMessage(text="抱歉，尚未有本周遺跡路線")
-
-    if datetime.now().isocalendar()[1] != int(values_list[3]):
-        line_bot_api.reply_message(event.reply_token, message_error)
-    else:
-        if event.message.text == u"@40遺跡":
-            line_bot_api.reply_message(event.reply_token, message40)
-        if event.message.text == u"@60遺跡":
-            line_bot_api.reply_message(event.reply_token, message60)
-        if event.message.text == u"@80遺跡":
-            line_bot_api.reply_message(event.reply_token, message80)
+        if datetime.now().isocalendar()[1] != int(values_list[3]):
+            line_bot_api.reply_message(event.reply_token, message_error)
+        else:
+            if event.message.text == u"@40遺跡":
+                line_bot_api.reply_message(event.reply_token, message40)
+            if event.message.text == u"@60遺跡":
+                line_bot_api.reply_message(event.reply_token, message60)
+            if event.message.text == u"@80遺跡":
+                line_bot_api.reply_message(event.reply_token, message80)
 
 
 if __name__ == "__main__":
