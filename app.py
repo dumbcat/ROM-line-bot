@@ -47,8 +47,9 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    revent = event
     if re.match('@event', event.message.text):
-        line_bot_api.reply_message(event.reply_token, event)
+        line_bot_api.reply_message(event.reply_token, revent)
     if re.match('^@\d\d\u907a\u8de1', event.message.text):
         # Get google sheet data
         values_list = gsheet()
