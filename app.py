@@ -12,20 +12,20 @@ from google_sheet import gsheet
 from datetime import datetime
 import re
 import json
-import schedule
-import time
+# import schedule
+# import time
 
 app = Flask(__name__)
 
 # Channel Access Token
 line_bot_api = LineBotApi(
-    'N0TaKleRhxpl5PihcX3X/KdT4LkqC94ac/yRbqkw9hWbIlo7Vb4Ov1nk2PHCDE4GPZrW34mnn'
-    'O37H56XHIHF9q9MK7bcYzykEeRDZm5XxeLAWLya5kYPYUdG4TniM7/nAB5ar/vzyZnMsSsE7T'
-    'pZkwdB04t89/1O/w1cDnyilFU='
+    'GJVhWFfLZiLXDpWJZDTNDzaN02icZ0SVldCAejfoe5a7SVVd5u6dkoFPcLQLx1QaDLRFeScN'
+    'Ju+PSiVRVG+8GJNFQvbYyeATg8sWkpzGXGsuueNDC+zt1T6rT9sG7bgu9XdBuOSTY4uRXSXd'
+    'eV0YSwdB04t89/1O/w1cDnyilFU='
 )
 
 # Channel Secret
-handler = WebhookHandler('0113bf91055e79d3f25ea9639a1b656f')
+handler = WebhookHandler('99f62b98d42e9be53921fa023b9bd754')
 
 # 監聽所有來自 /callback 的 Post Request
 
