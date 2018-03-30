@@ -81,13 +81,13 @@ def handle_message(event):
             if event.message.text == u"@80遺跡":
                 line_bot_api.reply_message(event.reply_token, message80)
 
-
-@app.route('/')
-def war_alarm():
-    schedule.every(1).minutes.do(line_bot_api.push_message('C22815b8fb3667c8c87886dec9e862810',TextSendMessage(text='Hello World!')))
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+line_bot_api.push_message('C22815b8fb3667c8c87886dec9e862810',TextSendMessage(text='Hello World!'))
+# @app.route('/')
+# def war_alarm():
+#     schedule.every(1).minutes.do(line_bot_api.push_message('C22815b8fb3667c8c87886dec9e862810',TextSendMessage(text='Hello World!')))
+#     while True:
+#         schedule.run_pending()
+#         time.sleep(1)
 
 
 if __name__ == "__main__":
