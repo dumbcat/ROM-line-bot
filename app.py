@@ -26,8 +26,6 @@ line_bot_api = LineBotApi(
 handler = WebhookHandler('0113bf91055e79d3f25ea9639a1b656f')
 
 # 監聽所有來自 /callback 的 Post Request
-
-
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -48,13 +46,15 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    # response group id或user id
     if re.match('@event', event.message.text):
         devent = json.loads(str(event))
         print(devent['source'])
+    # response relic map
     if re.match('^@\d\d\u907a\u8de1', event.message.text):
-        # Get google sheet data
+        # get google sheet data
         values_list = gsheet()
-
+        # get image link of relic map
         message40 = ImageSendMessage(
             original_content_url=values_list[0],
             preview_image_url=values_list[0]
@@ -68,7 +68,7 @@ def handle_message(event):
             preview_image_url=values_list[2]
         )
         message_error = TextSendMessage(text="抱歉，尚未有本周遺跡路線")
-
+        # determine map timestamp
         if datetime.now().isocalendar()[1] != int(values_list[3]):
             line_bot_api.reply_message(event.reply_token, message_error)
         else:
@@ -79,6 +79,9 @@ def handle_message(event):
             if event.message.text == u"@80遺跡":
                 line_bot_api.reply_message(event.reply_token, message80)
 
+
+if datetime.now().isocalendar()[1] == 4 and datetime.now().hour == 12:
+    line_bot_api.push_message('Cb8e8e11642b667670f2bd401499cc2b6', TextSendMessage(text='Hello World!'))
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
