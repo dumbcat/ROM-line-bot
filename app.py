@@ -49,7 +49,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     if re.match('@event', event.message.text):
-        devent = json.loads(event)
+        devent = json.loads(str(event))
         print(devent['source'])
     if re.match('^@\d\d\u907a\u8de1', event.message.text):
         # Get google sheet data
