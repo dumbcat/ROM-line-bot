@@ -80,7 +80,7 @@ def handle_message(event):
                 line_bot_api.reply_message(event.reply_token, message80)
 
 
-if datetime.now().isocalendar()[1] == 4 and datetime.now().hour == 12:
+if datetime.now().isocalendar()[1] == 5 and datetime.now().hour == 12:
     line_bot_api.push_message('Cb8e8e11642b667670f2bd401499cc2b6', TextSendMessage(text='Hello World!'))
 
 if __name__ == "__main__":
