@@ -94,8 +94,9 @@ def war_alarm():
 schedule.every(1).minutes.do(war_alarm)
 
 if __name__ == "__main__":
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
+
     while True:
         schedule.run_pending()
         time.sleep(1)
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
