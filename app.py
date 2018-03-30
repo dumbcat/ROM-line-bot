@@ -28,6 +28,8 @@ line_bot_api = LineBotApi(
 handler = WebhookHandler('0113bf91055e79d3f25ea9639a1b656f')
 
 # 監聽所有來自 /callback 的 Post Request
+
+
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -83,14 +85,17 @@ def handle_message(event):
 
 
 def war_alarm():
-    line_bot_api.push_message('Cb8e8e11642b667670f2bd401499cc2b6', TextSendMessage(text='Hello World!'))
+    line_bot_api.push_message(
+        'Cb8e8e11642b667670f2bd401499cc2b6',
+        TextSendMessage(text='Hello World!')
+    )
 
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-    schedule.every(10).minutes.do(war_alarm)
+    schedule.every(1).minutes.do(war_alarm)
 
     while True:
         schedule.run_pending()
-        time.sleep(60)
+        time.sleep(1)
