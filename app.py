@@ -14,6 +14,7 @@ import re
 import json
 import schedule
 import time
+from threading import Thread
 
 app = Flask(__name__)
 
@@ -26,6 +27,7 @@ line_bot_api = LineBotApi(
 
 # Channel Secret
 handler = WebhookHandler('99f62b98d42e9be53921fa023b9bd754')
+
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -81,15 +83,23 @@ def handle_message(event):
             if event.message.text == u"@80遺跡":
                 line_bot_api.reply_message(event.reply_token, message80)
 
-line_bot_api.push_message('C22815b8fb3667c8c87886dec9e862810',TextSendMessage(text='Hello World!'))
-# @app.route('/')
-# def war_alarm():
-#     schedule.every(1).minutes.do(line_bot_api.push_message('C22815b8fb3667c8c87886dec9e862810',TextSendMessage(text='Hello World!')))
-#     while True:
-#         schedule.run_pending()
-#         time.sleep(1)
+
+def war_alarm():
+    line_bot_api.push_message(
+        'C22815b8fb3667c8c87886dec9e862810',
+        TextSendMessage(text='Hello World!')
+    )
+
+
+def war_schedule():
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 
 if __name__ == "__main__":
+    schedule.every(1).minutes.do(war_alarm)
+    t = Thread(target=war_schedule)
+    t.start()
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
