@@ -81,8 +81,7 @@ def handle_message(event):
             )
             line_bot_api.reply_message(event.reply_token, message)
     if re.match('@test', event.message.text):
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="\uF4A50x100035Test"))
-
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="0x100035Test"))
 
 # guild wars 60mins alarm
 def war_alarm_60():
