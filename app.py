@@ -28,6 +28,7 @@ line_bot_api = LineBotApi(
 # Channel Secret
 handler = WebhookHandler('99f62b98d42e9be53921fa023b9bd754')
 
+# group list
 group_list = ['C22815b8fb3667c8c87886dec9e862810',
               'C4b622b292c25070df8ff03b11e35e3e9'
               ]
@@ -80,13 +81,9 @@ def handle_message(event):
                 preview_image_url=values_list[map_no]
             )
             line_bot_api.reply_message(event.reply_token, message)
-    if re.match('@test', event.message.text):
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(
-            text=u'\U0001F4A5' + '公會戰即將於「60分鐘」後開始，請參戰人員上線準備' + u'\U00100035'))
+
 
 # guild wars 60mins alarm
-
-
 def war_alarm_60():
     for group_id in group_list:
         line_bot_api.push_message(
