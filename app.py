@@ -86,7 +86,7 @@ def war_alarm():
     line_bot_api.push_message('Cb8e8e11642b667670f2bd401499cc2b6', TextSendMessage(text='Hello World!'))
 
 
-schedule.every().friday.at("12:20").do(war_alarm)
+schedule.every().friday.at("12:25").do(war_alarm)
 
 while True:
     schedule.run_pending()
