@@ -28,6 +28,10 @@ line_bot_api = LineBotApi(
 # Channel Secret
 handler = WebhookHandler('99f62b98d42e9be53921fa023b9bd754')
 
+group_list = ['C22815b8fb3667c8c87886dec9e862810',
+              'C2670740c2ca8650dbc452755c42da667'
+              ]
+
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -58,19 +62,7 @@ def handle_message(event):
     if re.match('^@\d\d\u907a\u8de1', event.message.text):
         # get google sheet data
         values_list = gsheet()
-        # get image link of relic map
-        # message40 = ImageSendMessage(
-        #     original_content_url=values_list[0],
-        #     preview_image_url=values_list[0]
-        # )
-        # message60 = ImageSendMessage(
-        #     original_content_url=values_list[1],
-        #     preview_image_url=values_list[1]
-        # )
-        # message80 = ImageSendMessage(
-        #     original_content_url=values_list[2],
-        #     preview_image_url=values_list[2]
-        # )
+
         message_error = TextSendMessage(text="抱歉，尚未有本周遺跡路線")
         # determine map timestamp
         if datetime.now().isocalendar()[1] != int(values_list[3]):
@@ -78,13 +70,11 @@ def handle_message(event):
         else:
             if event.message.text == u"@40遺跡":
                 map_no = 0
-                # line_bot_api.reply_message(event.reply_token, message40)
             if event.message.text == u"@60遺跡":
                 map_no = 1
-                # line_bot_api.reply_message(event.reply_token, message60)
             if event.message.text == u"@80遺跡":
                 map_no = 2
-                # line_bot_api.reply_message(event.reply_token, message80)
+            # get image link of relic map
             message = ImageSendMessage(
                 original_content_url=values_list[map_no],
                 preview_image_url=values_list[map_no]
@@ -94,18 +84,20 @@ def handle_message(event):
 
 # guild wars 60mins alarm
 def war_alarm_60():
-    line_bot_api.push_message(
-        'C22815b8fb3667c8c87886dec9e862810',
-        TextSendMessage(text='公會戰即將於60分鐘後開始，請上線準備')
-    )
+    for group_id in group_list:
+        line_bot_api.push_message(
+            group_id,
+            TextSendMessage(text='公會戰即將於「60分鐘」後開始，請參戰人員上線準備')
+        )
 
 
 # guild wars 30mins alarm
 def war_alarm_30():
-    line_bot_api.push_message(
-        'C22815b8fb3667c8c87886dec9e862810',
-        TextSendMessage(text='公會戰即將於30分鐘後開始，請上線準備')
-    )
+    for group_id in group_list:
+        line_bot_api.push_message(
+            group_id,
+            TextSendMessage(text='公會戰即將於「30分鐘」後開始，請參戰人員上線準備')
+        )
 
 
 # war alarm schedule runner
@@ -116,12 +108,15 @@ def war_schedule():
 
 
 if __name__ == "__main__":
-    # schedule.every().thursday.at("11:30").do(war_alarm)
+    # war alarm schedule
     schedule.every().thursday.at("11:00").do(war_alarm_60)
     schedule.every().thursday.at("11:30").do(war_alarm_30)
+    schedule.every().sunday.at("11:35").do(war_alarm_60)
+    schedule.every().sunday.at("11:36").do(war_alarm_30)
     schedule.every().sunday.at("11:00").do(war_alarm_60)
     schedule.every().sunday.at("11:30").do(war_alarm_30)
     t = Thread(target=war_schedule)
     t.start()
+
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
