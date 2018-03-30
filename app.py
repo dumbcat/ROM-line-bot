@@ -86,13 +86,11 @@ def war_alarm():
     line_bot_api.push_message('Cb8e8e11642b667670f2bd401499cc2b6', TextSendMessage(text='Hello World!'))
 
 
-schedule.every().friday.at("12:25").do(war_alarm)
-
-while True:
-    schedule.run_pending()
-    time.sleep(60)
-
-
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+    schedule.every().friday.at("12:25").do(war_alarm)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(60)
