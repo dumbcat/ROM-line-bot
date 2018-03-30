@@ -12,8 +12,8 @@ from google_sheet import gsheet
 from datetime import datetime
 import re
 import json
-# import schedule
-# import time
+import schedule
+import time
 
 app = Flask(__name__)
 
