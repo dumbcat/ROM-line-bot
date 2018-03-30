@@ -11,6 +11,7 @@ from linebot.models import (
 from google_sheet import gsheet
 from datetime import datetime
 import re
+import json
 
 app = Flask(__name__)
 
@@ -48,8 +49,8 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     if re.match('@event', event.message.text):
-        print(type(event))
-        print(event)
+        devent = json.loads(event)
+        print(devent['source'])
     if re.match('^@\d\d\u907a\u8de1', event.message.text):
         # Get google sheet data
         values_list = gsheet()
