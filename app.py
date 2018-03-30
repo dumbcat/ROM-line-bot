@@ -87,7 +87,7 @@ def handle_message(event):
 def war_alarm():
     line_bot_api.push_message(
         'C22815b8fb3667c8c87886dec9e862810',
-        TextSendMessage(text='Hello World!')
+        TextSendMessage(text='公會戰即將於今日20:00開始，請上線準備')
     )
 
 
@@ -98,8 +98,9 @@ def war_schedule():
 
 
 if __name__ == "__main__":
-    schedule.every().thursday.at("11:30")do(war_alarm)
-    schedule.every().friday.at("7:30").do(war_alarm)
+    #schedule.every().thursday.at("11:30").do(war_alarm)
+    schedule.every().friday.at("7:33").do(war_alarm)
+    schedule.every().friday.at("7:35").do(war_alarm)
     t = Thread(target=war_schedule)
     t.start()
     port = int(os.environ.get('PORT', 5000))
