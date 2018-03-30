@@ -84,18 +84,18 @@ def handle_message(event):
                 line_bot_api.reply_message(event.reply_token, message80)
 
 
-# def war_alarm():
-#     line_bot_api.push_message(
-#         'Ub9c65b05b4486ffa7ea9fba06d12621a',
-#         TextSendMessage(text='Hello World!')
-#     )
+def war_alarm():
+    line_bot_api.push_message(
+        'C22815b8fb3667c8c87886dec9e862810',
+        TextSendMessage(text='Hello World!')
+    )
 
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-    # schedule.every(1).minutes.do(war_alarm)
+    schedule.every(1).minutes.do(war_alarm)
 
-    # while True:
-    #     schedule.run_pending()
-    #     time.sleep(1)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
