@@ -111,8 +111,8 @@ if __name__ == "__main__":
     # war alarm schedule
     schedule.every().thursday.at("11:00").do(war_alarm_60)
     schedule.every().thursday.at("11:30").do(war_alarm_30)
-    schedule.every().friday.at("11:35").do(war_alarm_60)
-    schedule.every().friday.at("11:36").do(war_alarm_30)
+    schedule.every().friday.at("11:40").do(war_alarm_60)
+    schedule.every().friday.at("11:41").do(war_alarm_30)
     schedule.every().sunday.at("11:00").do(war_alarm_60)
     schedule.every().sunday.at("11:30").do(war_alarm_30)
     t = Thread(target=war_schedule)
