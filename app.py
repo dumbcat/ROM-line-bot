@@ -59,38 +59,56 @@ def handle_message(event):
         # get google sheet data
         values_list = gsheet()
         # get image link of relic map
-        message40 = ImageSendMessage(
-            original_content_url=values_list[0],
-            preview_image_url=values_list[0]
-        )
-        message60 = ImageSendMessage(
-            original_content_url=values_list[1],
-            preview_image_url=values_list[1]
-        )
-        message80 = ImageSendMessage(
-            original_content_url=values_list[2],
-            preview_image_url=values_list[2]
-        )
+        # message40 = ImageSendMessage(
+        #     original_content_url=values_list[0],
+        #     preview_image_url=values_list[0]
+        # )
+        # message60 = ImageSendMessage(
+        #     original_content_url=values_list[1],
+        #     preview_image_url=values_list[1]
+        # )
+        # message80 = ImageSendMessage(
+        #     original_content_url=values_list[2],
+        #     preview_image_url=values_list[2]
+        # )
         message_error = TextSendMessage(text="抱歉，尚未有本周遺跡路線")
         # determine map timestamp
         if datetime.now().isocalendar()[1] != int(values_list[3]):
             line_bot_api.reply_message(event.reply_token, message_error)
         else:
             if event.message.text == u"@40遺跡":
-                line_bot_api.reply_message(event.reply_token, message40)
+                map_no = 0
+                # line_bot_api.reply_message(event.reply_token, message40)
             if event.message.text == u"@60遺跡":
-                line_bot_api.reply_message(event.reply_token, message60)
+                map_no = 1
+                # line_bot_api.reply_message(event.reply_token, message60)
             if event.message.text == u"@80遺跡":
-                line_bot_api.reply_message(event.reply_token, message80)
+                map_no = 2
+                # line_bot_api.reply_message(event.reply_token, message80)
+            message = ImageSendMessage(
+                original_content_url=values_list[map_no],
+                preview_image_url=values_list[map_no]
+            )
+            line_bot_api.reply_message(event.reply_token, message)
 
 
-def war_alarm():
+# guild wars 60mins alarm
+def war_alarm_60():
     line_bot_api.push_message(
         'C22815b8fb3667c8c87886dec9e862810',
-        TextSendMessage(text='公會戰即將於今日20:00開始，請上線準備')
+        TextSendMessage(text='公會戰即將於60分鐘後開始，請上線準備')
     )
 
 
+# guild wars 30mins alarm
+def war_alarm_30():
+    line_bot_api.push_message(
+        'C22815b8fb3667c8c87886dec9e862810',
+        TextSendMessage(text='公會戰即將於30分鐘後開始，請上線準備')
+    )
+
+
+# war alarm schedule runner
 def war_schedule():
     while True:
         schedule.run_pending()
@@ -98,9 +116,11 @@ def war_schedule():
 
 
 if __name__ == "__main__":
-    #schedule.every().thursday.at("11:30").do(war_alarm)
-    schedule.every().friday.at("7:33").do(war_alarm)
-    schedule.every().friday.at("7:35").do(war_alarm)
+    # schedule.every().thursday.at("11:30").do(war_alarm)
+    schedule.every().thursday.at("11:00").do(war_alarm_60)
+    schedule.every().thursday.at("11:30").do(war_alarm_30)
+    schedule.every().sunday.at("11:00").do(war_alarm_60)
+    schedule.every().sunday.at("11:30").do(war_alarm_30)
     t = Thread(target=war_schedule)
     t.start()
     port = int(os.environ.get('PORT', 5000))
