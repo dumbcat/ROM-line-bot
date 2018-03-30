@@ -29,7 +29,7 @@ line_bot_api = LineBotApi(
 handler = WebhookHandler('99f62b98d42e9be53921fa023b9bd754')
 
 group_list = ['C22815b8fb3667c8c87886dec9e862810',
-              'C2670740c2ca8650dbc452755c42da667'
+              'C4b622b292c25070df8ff03b11e35e3e9'
               ]
 
 
@@ -80,6 +80,8 @@ def handle_message(event):
                 preview_image_url=values_list[map_no]
             )
             line_bot_api.reply_message(event.reply_token, message)
+    if re.match('@test', event.message.text):
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="\uF4A50x100035Test"))
 
 
 # guild wars 60mins alarm
@@ -111,8 +113,8 @@ if __name__ == "__main__":
     # war alarm schedule
     schedule.every().thursday.at("11:00").do(war_alarm_60)
     schedule.every().thursday.at("11:30").do(war_alarm_30)
-    schedule.every().friday.at("11:40").do(war_alarm_60)
-    schedule.every().friday.at("11:41").do(war_alarm_30)
+    # schedule.every().friday.at("11:40").do(war_alarm_60)
+    # schedule.every().friday.at("11:41").do(war_alarm_30)
     schedule.every().sunday.at("11:00").do(war_alarm_60)
     schedule.every().sunday.at("11:30").do(war_alarm_30)
     t = Thread(target=war_schedule)
