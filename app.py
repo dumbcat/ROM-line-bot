@@ -15,6 +15,7 @@ import json
 import schedule
 import time
 from threading import Thread
+from bs_rom import rom_boss
 
 app = Flask(__name__)
 
@@ -82,8 +83,11 @@ def handle_message(event):
             )
             line_bot_api.reply_message(event.reply_token, message)
     if re.match('^@B.+', event.message.text):
-        message = TextSendMessage(text=event.message.text[2:])
-        line_bot_api.reply_message(event.reply_token, message)
+        name = event.message.text[2:]
+        boss_list = rom_boss(name)
+        for boss in boss_list:
+            message = boss + '%0D%0A'
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text = message))
 
 
 
