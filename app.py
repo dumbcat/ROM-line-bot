@@ -82,7 +82,7 @@ def handle_message(event):
             )
             line_bot_api.reply_message(event.reply_token, message)
     if re.match('^@B.+', event.message.text):
-        message = TextSendMessage(text=event.message.text)
+        message = TextSendMessage(text=event.message.text[2:])
         line_bot_api.reply_message(event.reply_token, message)
 
 
