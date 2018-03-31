@@ -85,10 +85,9 @@ def handle_message(event):
     if re.match('^@B.+', event.message.text):
         name = event.message.text[2:]
         boss_list = rom_boss(name)
-        for boss in boss_list:
-            message = boss + '%0D%0A'
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text = message))
-
+        message = '%0D%0A'.join(boss_list)
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text=message))
 
 
 # guild wars 60mins alarm
