@@ -81,6 +81,9 @@ def handle_message(event):
                 preview_image_url=values_list[map_no]
             )
             line_bot_api.reply_message(event.reply_token, message)
+    if re.match('^@B.+', event.message.text):
+        line_bot_api.reply_message(event.reply_token, event.message.text)
+
 
 
 # guild wars 60mins alarm
