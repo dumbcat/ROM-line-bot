@@ -22,19 +22,18 @@ def rom_boss(name):
     soup = bs(res.text, 'html.parser')
     trs = soup.find_all('tr')
     return_list = list()
-    # Iterative all rows of server
+    # 每個分流為一個row，迭代每個row取得資料
     for i in range(0, len(trs)):
         if i > 0:
-            # A empty dictionary to save floor information
+            # 儲存該樓層資訊的空字典
             floor_dict = {}
             td = trs[i].find_all('td')
             server_id = td[0].get('data-sort')
             items = td[1].find_all('a', {'class': 'monster_mini mf'})
+            # 紀錄分流編號
             floor_dict['server'] = server_id
-            # Compare  user input with floor information
-            # if Compare match, add boss name into floor of the dict
+            # 將每個樓層的層數與該層的Boss名稱儲存為字典鍵值對
             for item in items:
-                # if mini_dict[item.get('data-mid')] == name:
                 if item.get('data-lv') in floor_dict:
                     floor_dict[
                         item.get('data-lv')].append(
@@ -43,8 +42,8 @@ def rom_boss(name):
                 else:
                     floor_dict[item.get('data-lv')
                                ] = [mini_dict[item.get('data-mid')]]
-            # print(floor_dict)
-
+            # 比對使用者輸入與樓層字典
+            # 如果使用者輸入的Boss名稱在一個樓層出現過兩次，就把資訊字串加入return_list中
             for key in floor_dict:
                 if floor_dict[key].count(name) > 1:
                     return_str = '分流「%s」的 %s 樓有 %s ' % (
@@ -54,15 +53,7 @@ def rom_boss(name):
                         return_list.append(return_str)
                     else:
                         return_list = [return_str]
-
-        # print(item.get('data-lv'), mini_dict[item.get('data-mid')])
-        #     if floor_dict != {}:
-        #         for key in floor_dict:
-        #             if len(floor_dict[key]) > 1:
-        #                 print('分流「%s」的 %s 樓有 %s 隻%s' %
-        #                       (server_id, key, len(floor_dict[key]), name))
-        #                 # print(floor_dict[key])
-        #                 # print('----------------------------')
+    # 如果所有樓層中，該Boss於同一層都沒有出現過兩次
     if len(return_list) == 0:
         return_str = '沒有任何分流同一樓層有兩隻 %s' % (name)
         return_list = [return_str]

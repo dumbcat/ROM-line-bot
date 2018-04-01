@@ -29,9 +29,9 @@ line_bot_api = LineBotApi(
 # Channel Secret
 handler = WebhookHandler('99f62b98d42e9be53921fa023b9bd754')
 
-# group list
+# 公會戰告警傳送group id
 group_list = ['C22815b8fb3667c8c87886dec9e862810',
-              'C4b622b292c25070df8ff03b11e35e3e9'
+              'C2670740c2ca8650dbc452755c42da667'
               ]
 
 
@@ -56,17 +56,17 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    # response group id或user id
+    # 測試用:回傳group id或user id於後台logs中
     if re.match('@event', event.message.text):
         devent = json.loads(str(event))
         print(devent['source'])
-    # response relic map
+    # 回傳遺跡地圖的圖片訊息
     if re.match('^@\d\d\u907a\u8de1', event.message.text):
-        # get google sheet data
+        # 取得google試算表遺跡地圖連結
         values_list = gsheet()
 
         message_error = TextSendMessage(text="抱歉，尚未有本周遺跡路線")
-        # determine map timestamp
+        # 以週數戳記確認遺跡地圖是否更新
         if datetime.now().isocalendar()[1] != int(values_list[3]):
             line_bot_api.reply_message(event.reply_token, message_error)
         else:
@@ -76,12 +76,13 @@ def handle_message(event):
                 map_no = 1
             if event.message.text == u"@80遺跡":
                 map_no = 2
-            # get image link of relic map
+            # 取得對應的遺跡地圖連結，儲存為回應訊息格式
             message = ImageSendMessage(
                 original_content_url=values_list[map_no],
                 preview_image_url=values_list[map_no]
             )
             line_bot_api.reply_message(event.reply_token, message)
+    # 回傳恩德勒斯塔Boss文字訊息
     if re.match('^@B.+', event.message.text):
         name = event.message.text[2:]
         boss_list = rom_boss(name)
@@ -89,8 +90,16 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text=message))
 
+    if re.match('^@廣播.+', event.message.text):
+        message = event.message.text[4:]
+        for group_id in group_list:
+            line_bot_api.push_message(
+                group_id,
+                TextSendMessage(text=message)
+            )
 
-# guild wars 60mins alarm
+
+# 公會戰開戰60分鐘前告警推送訊息
 def war_alarm_60():
     for group_id in group_list:
         line_bot_api.push_message(
@@ -100,7 +109,7 @@ def war_alarm_60():
         )
 
 
-# guild wars 30mins alarm
+# 公會戰開戰30分鐘前告警推送訊息
 def war_alarm_30():
     for group_id in group_list:
         line_bot_api.push_message(
@@ -110,7 +119,7 @@ def war_alarm_30():
         )
 
 
-# war alarm schedule runner
+# 公會戰告警排程執行器
 def war_schedule():
     while True:
         schedule.run_pending()
@@ -118,7 +127,7 @@ def war_schedule():
 
 
 if __name__ == "__main__":
-    # war alarm schedule
+    # 公會戰告警排程
     schedule.every().thursday.at("11:00").do(war_alarm_60)
     schedule.every().thursday.at("11:30").do(war_alarm_30)
     # schedule.every().friday.at("11:40").do(war_alarm_60)
