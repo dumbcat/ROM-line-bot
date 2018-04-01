@@ -31,7 +31,8 @@ handler = WebhookHandler('99f62b98d42e9be53921fa023b9bd754')
 
 # 公會戰告警傳送group id
 group_list = ['C22815b8fb3667c8c87886dec9e862810',
-              'C2670740c2ca8650dbc452755c42da667'
+              'C2670740c2ca8650dbc452755c42da667',
+              'C4b622b292c25070df8ff03b11e35e3e9'
               ]
 
 
