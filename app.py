@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, abort, render_template
+from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
@@ -34,11 +34,6 @@ group_list = ['C22815b8fb3667c8c87886dec9e862810',
               'C2670740c2ca8650dbc452755c42da667',
               'C4b622b292c25070df8ff03b11e35e3e9'
               ]
-
-
-@app.route('/', methods=['GET'])  # 當網址未輸入任何參數時所執行的程式
-def index():
-    return render_template('index.html')
 
 
 # 監聽所有來自 /callback 的 Post Request
