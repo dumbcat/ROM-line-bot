@@ -31,7 +31,6 @@ handler = WebhookHandler('99f62b98d42e9be53921fa023b9bd754')
 
 # 公會戰告警傳送group id
 group_list = ['C22815b8fb3667c8c87886dec9e862810',
-              'C2670740c2ca8650dbc452755c42da667',
               'C4b622b292c25070df8ff03b11e35e3e9'
               ]
 
@@ -116,7 +115,7 @@ def war_alarm_30():
         line_bot_api.push_message(
             group_id,
             TextSendMessage(text=u'\U0001F4A5' +
-                            '公會戰即將於「60分鐘」後開始，請參戰人員上線準備' + u'\U00100035')
+                            '公會戰即將於「30分鐘」後開始，請參戰人員上線準備' + u'\U00100035')
         )
 
 
