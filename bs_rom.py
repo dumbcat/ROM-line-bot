@@ -57,7 +57,8 @@ def rom_boss(name):
     if len(return_list) == 0:
         return_str = '沒有任何分流同一樓層有兩隻 %s' % (name)
         return_list = [return_str]
-    return return_list.append('Endless Tower資料由https://ro.fws.tw/提供')
+    return_list.append('Endless Tower資料由https://ro.fws.tw/提供')
+    return return_list
 
 
 if __name__ == '__main__':
