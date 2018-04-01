@@ -38,7 +38,7 @@ group_list = ['C22815b8fb3667c8c87886dec9e862810',
 
 @app.route('/', methods=['GET'])  # 當網址未輸入任何參數時所執行的程式
 def index():
-    return(render_template('index.html'))
+    return render_template('index.html')
 
 
 # 監聽所有來自 /callback 的 Post Request
