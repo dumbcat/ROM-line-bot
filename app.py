@@ -90,7 +90,7 @@ def handle_message(event):
         message = '\n'.join(boss_list)
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text=message))
-
+    # 廣播訊息至所有群組
     if re.match('^@廣播.+', event.message.text):
         message = event.message.text[4:]
         for group_id in group_list:
