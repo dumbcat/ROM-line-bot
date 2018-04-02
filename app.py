@@ -56,13 +56,11 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    devent = json.loads(str(event))
     # 測試用:回傳group id或user id於後台logs中
-    if re.match('@event', event.message.text):
-        devent = json.loads(str(event))
+    if re.match('@guid', event.message.text):
         for key in devent['source']:
             print(key, ':', devent['source'][key])
-        # print(devent['source'])
-        # print(devent['message'])
 
     # 回傳遺跡地圖的圖片訊息
     if re.match('^@\d\d\u907a\u8de1', event.message.text):
@@ -106,6 +104,9 @@ def handle_message(event):
                 group_id,
                 TextSendMessage(text=message)
             )
+    for key in devent['message']:
+            print(key, ':', devent['source'][key])
+
 
 
 # 公會戰開戰60分鐘前告警推送訊息
