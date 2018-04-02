@@ -69,20 +69,20 @@ def handle_message(event):
         message_error = TextSendMessage(text="抱歉，尚未有本周遺跡路線")
 
         # 以週數戳記確認遺跡地圖是否更新
-        if datetime.now().isocalendar()[1] != int(values_list[3]):
+        if datetime.now().isocalendar()[1] != int(values_list[6]):
             line_bot_api.reply_message(event.reply_token, message_error)
         else:
             if event.message.text == u"@40遺跡":
                 map_no = 0
             if event.message.text == u"@60遺跡":
-                map_no = 1
-            if event.message.text == u"@80遺跡":
                 map_no = 2
+            if event.message.text == u"@80遺跡":
+                map_no = 4
 
             # 取得對應的遺跡地圖連結，儲存為回應訊息格式
             message = ImageSendMessage(
                 original_content_url=values_list[map_no],
-                preview_image_url=values_list[map_no]
+                preview_image_url=values_list[map_no + 1]
             )
             line_bot_api.reply_message(event.reply_token, message)
 
