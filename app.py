@@ -58,7 +58,7 @@ def callback():
 def handle_message(event):
     # 測試用:回傳group id或user id於後台logs中
     if re.match('@event', event.message.text):
-        devent = json.loads(str(event))
+        devent = json.loads(event)
         print(devent['source'])
         print(devent['message'])
 
