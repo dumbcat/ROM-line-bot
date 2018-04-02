@@ -60,7 +60,7 @@ def handle_message(event):
     if re.match('@event', event.message.text):
         devent = json.loads(str(event))
         for key in devent['source']:
-            print(key, ':', devent['source']['key'])
+            print(key, ':', devent['source'][key])
         # print(devent['source'])
         # print(devent['message'])
 
