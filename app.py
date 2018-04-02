@@ -104,9 +104,7 @@ def handle_message(event):
                 group_id,
                 TextSendMessage(text=message)
             )
-    for key in devent['message']:
-            print(key, ':', devent['message'][key])
-
+    print('message text:', devent['message']['text'])
 
 
 # 公會戰開戰60分鐘前告警推送訊息
