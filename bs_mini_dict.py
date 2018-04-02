@@ -22,6 +22,7 @@ def mini_dict():
     mini_dict = {}
     # 如果網站沒有該樓層資料，Boss編號會為0
     mini_dict['0'] = 'No info.'
+
     # 取得所有Boss編號與Boss名稱配對，儲存為字典
     for mini in minis:
         mini_dict[mini.get('data-mid')] = mini.get('title')

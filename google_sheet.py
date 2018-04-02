@@ -6,12 +6,9 @@ def gsheet():
     # 連接google sheet
     scope = ['https://spreadsheets.google.com/feeds',
              'https://www.googleapis.com/auth/drive']
-
     credentials = ServiceAccountCredentials.from_json_keyfile_name(
         'python-455eb62bc054.json', scope)
-
     gc = gspread.authorize(credentials)
-
     # 連接試算表
     sh1 = gc.open_by_key('1QQOXE_WasDzkHnQ9aXvc--eXjRso7U77lCEM7Mug8Zc')
     # 連接試算表分頁

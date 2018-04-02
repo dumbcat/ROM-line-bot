@@ -60,12 +60,14 @@ def handle_message(event):
     if re.match('@event', event.message.text):
         devent = json.loads(str(event))
         print(devent['source'])
+
     # 回傳遺跡地圖的圖片訊息
     if re.match('^@\d\d\u907a\u8de1', event.message.text):
         # 取得google試算表遺跡地圖連結
         values_list = gsheet()
 
         message_error = TextSendMessage(text="抱歉，尚未有本周遺跡路線")
+
         # 以週數戳記確認遺跡地圖是否更新
         if datetime.now().isocalendar()[1] != int(values_list[3]):
             line_bot_api.reply_message(event.reply_token, message_error)
@@ -76,12 +78,14 @@ def handle_message(event):
                 map_no = 1
             if event.message.text == u"@80遺跡":
                 map_no = 2
+
             # 取得對應的遺跡地圖連結，儲存為回應訊息格式
             message = ImageSendMessage(
                 original_content_url=values_list[map_no],
                 preview_image_url=values_list[map_no]
             )
             line_bot_api.reply_message(event.reply_token, message)
+
     # 回傳恩德勒斯塔Boss文字訊息
     if re.match('^@B.+', event.message.text):
         name = event.message.text[2:]
@@ -89,9 +93,11 @@ def handle_message(event):
         message = '\n'.join(boss_list)
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text=message))
+
     # 廣播訊息至所有群組
     if re.match('^@廣播.+', event.message.text):
         message = event.message.text[4:]
+
         for group_id in group_list:
             line_bot_api.push_message(
                 group_id,
