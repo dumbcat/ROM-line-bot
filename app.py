@@ -105,7 +105,7 @@ def handle_message(event):
                 TextSendMessage(text=message)
             )
     for key in devent['message']:
-            print(key, ':', devent['source'][key])
+            print(key, ':', devent['message'][key])
 
 
 
