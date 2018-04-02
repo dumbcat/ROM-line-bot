@@ -75,14 +75,14 @@ def handle_message(event):
             if event.message.text == u"@40遺跡":
                 map_no = 0
             if event.message.text == u"@60遺跡":
-                map_no = 2
+                map_no = 1
             if event.message.text == u"@80遺跡":
-                map_no = 4
+                map_no = 2
 
             # 取得對應的遺跡地圖連結，儲存為回應訊息格式
             message = ImageSendMessage(
                 original_content_url=values_list[map_no],
-                preview_image_url=values_list[map_no + 1]
+                preview_image_url=values_list[map_no]
             )
             line_bot_api.reply_message(event.reply_token, message)
 
