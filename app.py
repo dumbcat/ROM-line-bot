@@ -60,6 +60,7 @@ def handle_message(event):
     if re.match('@event', event.message.text):
         devent = json.loads(str(event))
         print(devent['source'])
+        print(devent['message'])
 
     # 回傳遺跡地圖的圖片訊息
     if re.match('^@\d\d\u907a\u8de1', event.message.text):
