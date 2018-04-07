@@ -21,9 +21,9 @@ app = Flask(__name__)
 
 # Channel Access Token
 line_bot_api = LineBotApi(
-    'GJVhWFfLZiLXDpWJZDTNDzaN02icZ0SVldCAejfoe5a7SVVd5u6dkoFPcLQLx1QaDLRFeScN'
-    'Ju+PSiVRVG+8GJNFQvbYyeATg8sWkpzGXGsuueNDC+zt1T6rT9sG7bgu9XdBuOSTY4uRXSXd'
-    'eV0YSwdB04t89/1O/w1cDnyilFU='
+    'Y20IOxeOFYFRsZiFbP432OINZhG+FYnLBzlts+QjnKJknzEk2isSAX+S0Ze0HojDDLRFeScN'
+    'Ju+PSiVRVG+8GJNFQvbYyeATg8sWkpzGXGv97+AyumWmQtOqt9ZA+5aaPDkYn4ebmTJe9tjb'
+    'gQNdpAdB04t89/1O/w1cDnyilFU='
 )
 
 # Channel Secret
@@ -83,7 +83,7 @@ def handle_message(event):
             # 取得對應的遺跡地圖連結，儲存為回應訊息格式
             message = ImageSendMessage(
                 original_content_url=values_list[map_no],
-                preview_image_url=values_list[map_no+1]
+                preview_image_url=values_list[map_no + 1]
             )
             line_bot_api.reply_message(event.reply_token, message)
 
