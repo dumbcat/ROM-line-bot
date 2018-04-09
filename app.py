@@ -71,21 +71,32 @@ def handle_message(event):
     if re.match('^@\d\d\u907a\u8de1', event.message.text):
         # 取得google試算表遺跡地圖連結
         # values_list = gsheet()
+
+        # url example:
         # https://ro.fws.tw/uploads/raid/2018-04-09/EG_2018-04-09_80.jpg
-        # message_error = TextSendMessage(text="抱歉，尚未有本周遺跡路線")
         url = 'https://ro.fws.tw/uploads/raid/' + \
             this_week_start_dt + '/EG_' + this_week_start_dt
+        # message_error = TextSendMessage(text="抱歉，尚未有本周遺跡路線")
+        # # 以週數戳記確認遺跡地圖是否更新
+        # if datetime.now().isocalendar()[1] != int(values_list[6]):
+        #     line_bot_api.reply_message(event.reply_token, message_error)
+        # else:
         if event.message.text == u"@40遺跡":
             url = url + '_40.jpg'
+            # map_no = 0
         if event.message.text == u"@60遺跡":
             url = url + '_60.jpg'
+            # map_no = 2
         if event.message.text == u"@80遺跡":
             url = url + '_80.jpg'
+            # map_no = 4
 
-        # 取得對應的遺跡地圖連結，儲存為回應訊息格式
+            # 取得對應的遺跡地圖連結，儲存為回應訊息格式
         message = ImageSendMessage(
             original_content_url=url,
             preview_image_url=url
+            # original_content_url=values_list[map_no],
+            # preview_image_url=values_list[map_no + 1]
         )
         line_bot_api.reply_message(event.reply_token, message)
 
