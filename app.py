@@ -23,7 +23,7 @@ app = Flask(__name__)
 
 # read config.ini to get channel access token and channel secret
 config = configparser.ConfigParser()
-config.read('Config.ini')
+config.read('config.ini')
 channel_access_token = config.get('BASE', 'channel_access_token')
 channel_secret = config.get('BASE', 'channel_secret')
 # Channel Access Token
