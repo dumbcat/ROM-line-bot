@@ -124,7 +124,9 @@ def handle_message(event):
         profile = line_bot_api.get_profile(userid)
         print(profile.display_name, 'says:', devent['message']['text'])
     except LineBotApiError as e:
-        print('LineBotApiError')
+        print('Status Code:', e.status_code)
+        print('Error Message:', e.error.message)
+        print('Error Details:', e.error.details)
 
 
 # 公會戰開戰60分鐘前告警推送訊息
