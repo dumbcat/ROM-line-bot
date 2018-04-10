@@ -1,4 +1,5 @@
 import os
+import configparser
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -20,15 +21,15 @@ from bs_rom import rom_boss
 
 app = Flask(__name__)
 
+# read config.ini to get channel access token and channel secret
+config = configparser.ConfigParser()
+config.read('Config.ini')
+channel_access_token = config.get('BASE', 'channel_access_token')
+channel_secret = config.get('BASE', 'channel_secret')
 # Channel Access Token
-line_bot_api = LineBotApi(
-    'Y20IOxeOFYFRsZiFbP432OINZhG+FYnLBzlts+QjnKJknzEk2isSAX+S0Ze0HojDDLRFeScN'
-    'Ju+PSiVRVG+8GJNFQvbYyeATg8sWkpzGXGv97+AyumWmQtOqt9ZA+5aaPDkYn4ebmTJe9tjb'
-    'gQNdpAdB04t89/1O/w1cDnyilFU='
-)
-
+line_bot_api = LineBotApi(channel_access_token)
 # Channel Secret
-handler = WebhookHandler('99f62b98d42e9be53921fa023b9bd754')
+handler = WebhookHandler(channel_secret)
 
 # 公會戰告警傳送group id
 group_list = ['C22815b8fb3667c8c87886dec9e862810',
