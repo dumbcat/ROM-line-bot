@@ -32,7 +32,7 @@ line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
 # 公會戰告警傳送group id
-group_list = config.get('BASE','group_list').split(',')
+group_list = config.get('BASE', 'group_list').split(',')
 # group_list = ['C22815b8fb3667c8c87886dec9e862810',
 #               'C4b622b292c25070df8ff03b11e35e3e9'
 #               ]
