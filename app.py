@@ -2,7 +2,7 @@ import os
 import configparser
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
-from linebot.exceptions import InvalidSignatureError
+from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import (
     MessageEvent,
     TextMessage,
@@ -119,9 +119,11 @@ def handle_message(event):
                 TextSendMessage(text=message)
             )
     userid = devent['source']['userId']
-    profile = line_bot_api.get_profile(userid)
-
-    print(profile.display_name, 'says:', devent['message']['text'])
+    try:
+        profile = line_bot_api.get_profile(userid)
+        print(profile.display_name, 'says:', devent['message']['text'])
+    except LineBotApiError as e:
+        print('LineBotApiError')
 
 
 # 公會戰開戰60分鐘前告警推送訊息
