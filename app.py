@@ -118,7 +118,10 @@ def handle_message(event):
                 group_id,
                 TextSendMessage(text=message)
             )
-    print('message text:', devent['message']['text'])
+    userid = devent['source']['userId']
+    profile = line_bot_api.get_profile(userid)
+
+    print(profile.display_name, 'says:', devent['message']['text'])
 
 
 # 公會戰開戰60分鐘前告警推送訊息
