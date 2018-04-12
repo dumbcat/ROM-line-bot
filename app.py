@@ -158,12 +158,12 @@ def war_schedule():
 
 if __name__ == "__main__":
     # 公會戰告警排程
-    schedule.every().thursday.at("11:00").do(war_alarm_60)
-    schedule.every().thursday.at("11:30").do(war_alarm_30)
+    schedule.every().thursday.at("12:00").do(war_alarm_60)
+    schedule.every().thursday.at("12:30").do(war_alarm_30)
     # schedule.every().friday.at("11:40").do(war_alarm_60)
     # schedule.every().friday.at("11:41").do(war_alarm_30)
-    schedule.every().sunday.at("11:00").do(war_alarm_60)
-    schedule.every().sunday.at("11:30").do(war_alarm_30)
+    schedule.every().sunday.at("12:00").do(war_alarm_60)
+    schedule.every().sunday.at("12:30").do(war_alarm_30)
     t = Thread(target=war_schedule)
     t.start()
 
