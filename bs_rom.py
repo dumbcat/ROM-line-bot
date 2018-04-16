@@ -1,8 +1,6 @@
 from bs4 import BeautifulSoup as bs
 import requests
 from bs_mini_dict import mini_dict
-# from urllib.request import urlopen
-# import os
 
 # Get monster number mapping
 mini_dict = mini_dict()
@@ -51,7 +49,6 @@ def rom_boss(name):
                 if floor_dict[key].count(name) > 1:
                     return_str = '分流「%s」的 %s 樓有 %s ' % (
                         floor_dict['server'], key, ','.join(floor_dict[key]))
-                    # print(return_str)
                     if len(return_list) != 0:
                         return_list.append(return_str)
                     else:

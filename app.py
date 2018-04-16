@@ -9,7 +9,6 @@ from linebot.models import (
     TextSendMessage,
     ImageSendMessage
 )
-# from google_sheet import gsheet
 from datetime import datetime
 import datetime as dt
 import re
@@ -33,9 +32,6 @@ handler = WebhookHandler(channel_secret)
 
 # 公會戰告警傳送group id
 group_list = config.get('BASE', 'group_list').split(',')
-# group_list = ['C22815b8fb3667c8c87886dec9e862810',
-#               'C4b622b292c25070df8ff03b11e35e3e9'
-#               ]
 
 # 取得本周第一天的日期
 date1 = datetime.now()
@@ -72,33 +68,23 @@ def handle_message(event):
     # 回傳遺跡地圖的圖片訊息
     if re.match('^@\d\d\u907a\u8de1', event.message.text):
         # 取得google試算表遺跡地圖連結
-        # values_list = gsheet()
 
         # url example:
         # https://ro.fws.tw/uploads/raid/2018-04-09/EG_2018-04-09_80.jpg
         url = 'https://ro.fws.tw/uploads/raid/' + \
             this_week_start_dt + '/EG_' + this_week_start_dt
-        # message_error = TextSendMessage(text="抱歉，尚未有本周遺跡路線")
-        # # 以週數戳記確認遺跡地圖是否更新
-        # if datetime.now().isocalendar()[1] != int(values_list[6]):
-        #     line_bot_api.reply_message(event.reply_token, message_error)
-        # else:
+
         if event.message.text == u"@40遺跡":
             url = url + '_40.jpg'
-            # map_no = 0
         if event.message.text == u"@60遺跡":
             url = url + '_60.jpg'
-            # map_no = 2
         if event.message.text == u"@80遺跡":
             url = url + '_80.jpg'
-            # map_no = 4
 
-            # 取得對應的遺跡地圖連結，儲存為回應訊息格式
+        # 取得對應的遺跡地圖連結，儲存為回應訊息格式
         message = ImageSendMessage(
             original_content_url=url,
             preview_image_url=url
-            # original_content_url=values_list[map_no],
-            # preview_image_url=values_list[map_no + 1]
         )
         line_bot_api.reply_message(event.reply_token, message)
 
@@ -160,8 +146,6 @@ if __name__ == "__main__":
     # 公會戰告警排程
     schedule.every().thursday.at("12:00").do(war_alarm_60)
     schedule.every().thursday.at("12:30").do(war_alarm_30)
-    # schedule.every().friday.at("11:40").do(war_alarm_60)
-    # schedule.every().friday.at("11:41").do(war_alarm_30)
     schedule.every().sunday.at("12:00").do(war_alarm_60)
     schedule.every().sunday.at("12:30").do(war_alarm_30)
     t = Thread(target=war_schedule)
