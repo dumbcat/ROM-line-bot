@@ -36,6 +36,18 @@
 
 + **Procfile:** Specifies the commands that are executed by the Heroku app on startup.
 
+## Attention
+
+You need to create config.ini and enter the following content.
+
+<pre><code>[BASE]
+channel_access_token = <i>&lt;channel access token></i>
+channel_secret = <i>&lt;channel secret></i>
+group_list = <i>&lt;group 1 id>, &lt;group 2 id></i>
+</code></pre>
+
+And follow the tutorial to deploy the program to your application server.
+
 ## Reference
 
 &#91;1] https://developers.line.biz/en/docs/messaging-api/getting-started/

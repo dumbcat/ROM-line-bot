@@ -16,8 +16,7 @@ Use Line message api push text message to specify user, gourp, or room.
 
 1. Create config.ini and enter the following content:
 
-<pre><code>
-[BASE]
+<pre><code>[BASE]
 token = Bearer <i>&lt;channel access token></i>
 id = <i>&lt;user, group, or room id></i>
 </code></pre>
