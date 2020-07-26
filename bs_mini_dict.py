@@ -1,29 +1,32 @@
-from bs4 import BeautifulSoup as bs
 import requests
+from bs4 import BeautifulSoup as bs
 
-# 指定request的header
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
     'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36'
 }
 
-# 從https://ro.fws.tw取得恩德勒斯塔50樓以上網頁資訊
 res = requests.get(
     'https://ro.fws.tw/db/endless/tower/50', headers=headers
 )
 
 
 def mini_dict():
-    # 指定BeautifulSoup解析文件與格式
+    """Get all boss numbers and boss names of endless tower.
+
+    Returns:
+        dictionary: Dictionary with all boss numbers as key and boss names as value
+    """
+    # Search HTML <a> tag which match the class and data-toggle attributes.
     soup = bs(res.text, 'html.parser')
     minis = soup.find_all(
         'a', {'class': 'monster_mini', 'data-toggle': 'tooltip'}
     )
     mini_dict = {}
-    # 如果網站沒有該樓層資料，Boss編號會為0
+    # Define the key value when bs_rom.py without boss info.
     mini_dict['0'] = 'No info.'
 
-    # 取得所有Boss編號與Boss名稱配對，儲存為字典
+    # Generate dictionary with boss numbers and nemes.
     for mini in minis:
         mini_dict[mini.get('data-mid')] = mini.get('title')
 

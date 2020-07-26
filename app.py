@@ -1,46 +1,46 @@
-import os
 import configparser
-from flask import Flask, request, abort
+import datetime as dt
+import json
+import os
+import re
+import time
+from datetime import datetime
+from threading import Thread
+
+import schedule
+from flask import Flask, abort, request
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
-from linebot.models import (
-    MessageEvent,
-    TextMessage,
-    TextSendMessage,
-    ImageSendMessage
-)
-from datetime import datetime
-import datetime as dt
-import re
-import json
-import schedule
-import time
-from threading import Thread
+from linebot.models import (ImageSendMessage, MessageEvent, TextMessage,
+                            TextSendMessage)
+
 from bs_rom import rom_boss
 
 app = Flask(__name__)
 
-# read config.ini to get channel access token and channel secret
 config = configparser.ConfigParser()
 config.read('config.ini')
 channel_access_token = config.get('BASE', 'channel_access_token')
 channel_secret = config.get('BASE', 'channel_secret')
-# Channel Access Token
+
 line_bot_api = LineBotApi(channel_access_token)
-# Channel Secret
 handler = WebhookHandler(channel_secret)
 
-# 公會戰告警傳送group id
+# List of line group id for send the guild war alert.
 group_list = config.get('BASE', 'group_list').split(',')
 
-# 取得本周第一天的日期
+# Get first day of this week.
 date1 = datetime.now()
 this_week_start_dt = str(date1 - dt.timedelta(days=date1.weekday())).split()[0]
 
 
-# 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
+    """Listen all POST request from /callback
+
+    Returns:
+        str: Request status.
+    """
     # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
 
@@ -59,16 +59,19 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    """Return the corresponding message based on the keywords entered by the user.
+
+    Args:
+        event (MessageEvent): Webhook MessageEvent entered by the user.
+    """
     devent = json.loads(str(event))
-    # 測試用:回傳group id或user id於後台logs中
+    # (FOR TEST)Print group id or user id in the console.
     if re.match('@guid', event.message.text):
         for key in devent['source']:
             print(key, ':', devent['source'][key])
 
-    # 回傳遺跡地圖的圖片訊息
-    if re.match('^@\d\d\u907a\u8de1', event.message.text):
-        # 取得google試算表遺跡地圖連結
-
+    # Parser user input then return image message of ruins map.
+    if re.match(r'^@\d\d\u907a\u8de1', event.message.text):
         # url example:
         # https://ro.fws.tw/uploads/raid/2018-04-09/EG_2018-04-09_80.jpg
         url = 'https://ro.fws.tw/uploads/raid/' + \
@@ -81,22 +84,23 @@ def handle_message(event):
         if event.message.text == u"@80遺跡":
             url = url + '_80.jpg'
 
-        # 取得對應的遺跡地圖連結，儲存為回應訊息格式
+        # https://github.com/line/line-bot-sdk-python#imagesendmessage
         message = ImageSendMessage(
             original_content_url=url,
             preview_image_url=url
         )
         line_bot_api.reply_message(event.reply_token, message)
 
-    # 回傳恩德勒斯塔Boss文字訊息
+    # Parser user input then return text message of endless tower boss imformation
     if re.match('^@B.+', event.message.text):
         name = event.message.text[2:]
         boss_list = rom_boss(name)
         message = '\n'.join(boss_list)
+        # https://github.com/line/line-bot-sdk-python#textsendmessage
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text=message))
 
-    # 廣播訊息至所有群組
+    # (FOR TEST)Broadcast message to all groups in group list.
     if re.match('^@廣播.+', event.message.text):
         message = event.message.text[4:]
 
@@ -115,39 +119,33 @@ def handle_message(event):
         print('Error Details:', e.error.details)
 
 
-# 公會戰開戰60分鐘前告警推送訊息
-def war_alarm_60():
+def war_alarm(mins):
+    """Alert push message before the guild war starts.
+
+    Args:
+        min (string): Alarm time before the guild war starts.
+    """
     for group_id in group_list:
         line_bot_api.push_message(
             group_id,
             TextSendMessage(text=u'\U0001F4A5' +
-                            '公會戰即將於「60分鐘」後開始，請參戰人員上線準備' + u'\U00100035')
+                            '公會戰即將於「' + mins + '分鐘」後開始，請參戰人員上線準備' + u'\U00100035')
         )
 
 
-# 公會戰開戰30分鐘前告警推送訊息
-def war_alarm_30():
-    for group_id in group_list:
-        line_bot_api.push_message(
-            group_id,
-            TextSendMessage(text=u'\U0001F4A5' +
-                            '公會戰即將於「30分鐘」後開始，請參戰人員上線準備' + u'\U00100035')
-        )
-
-
-# 公會戰告警排程執行器
 def war_schedule():
+    """Run the schedule of the guild war alert."""
     while True:
         schedule.run_pending()
         time.sleep(1)
 
 
 if __name__ == "__main__":
-    # 公會戰告警排程
-    schedule.every().thursday.at("12:00").do(war_alarm_60)
-    schedule.every().thursday.at("12:30").do(war_alarm_30)
-    schedule.every().sunday.at("12:00").do(war_alarm_60)
-    schedule.every().sunday.at("12:30").do(war_alarm_30)
+    # Guild war alert schedule.
+    schedule.every().thursday.at("12:00").do(war_alarm('60'))
+    schedule.every().thursday.at("12:30").do(war_alarm('30'))
+    schedule.every().sunday.at("12:00").do(war_alarm('60'))
+    schedule.every().sunday.at("12:30").do(war_alarm('30'))
     t = Thread(target=war_schedule)
     t.start()
 

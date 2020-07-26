@@ -1,4 +1,4 @@
-__pycache__
-python-455eb62bc054.json
-google_sheet.py
-config.ini
+**/__pycache__
+.vscode
+**/config.ini
+test_bs_mini_dict.py
