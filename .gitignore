@@ -2,4 +2,3 @@
 .vscode
 **/config.ini
 test_bs_mini_dict.py
-.gitignore
